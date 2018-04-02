@@ -51,6 +51,7 @@
 	uint8_t	rub_posUnidades = 0u;
 	uint8_t	rub_posDecenas = 0u;
 	uint8_t	rub_posCentenas = 0u;
+	uint8_t rub_posMillares = 0u;
 	uint8_t	rub_Modo = 1u, rub_pressed = false;
 	volatile uint8_t rub_GPIOBstatus = 0u;
 	volatile uint16_t lub_vecesPressed = 0u;
@@ -63,7 +64,7 @@
 	#define BOARD_TPM_HANDLER 	TPM2_IRQHandler
 	#define TPM_SOURCE_CLOCK 	(CLOCK_GetFreq(kCLOCK_PllFllSelClk)/4)		/* Get source clock for TPM driver */
 	#define LOOP				2u
-	#define SECONDLOOP			50U
+	#define SECONDLOOP			1u
 
 	//	VARIABLES:
 	uint32_t cnt = 0u;
@@ -236,7 +237,7 @@ void MAIN_P01_MultiplexarYEscribir(uint32_t vecesMultiplex){
 		MAIN_P01_delay(luw_delayMultiplex);
 		GPIOE->PDOR ^= BIT2;
 
-		GPIOC->PDOR = rauw_digito[rub_Modo];
+		GPIOC->PDOR = rauw_digito[rub_posMillares];
 		GPIOE->PDOR |= BIT3;
 		MAIN_P01_delay(luw_delayMultiplex);
 		GPIOE->PDOR ^= BIT3;
@@ -439,7 +440,12 @@ static void MAIN_P02_incrementHandler(void){
 					rub_posDecenas = 0;
 					rub_posCentenas++;
 					if(rub_posCentenas == 10)
+					{
 						rub_posCentenas = 0;
+						rub_posMillares++;
+						if(rub_posMillares ==10)
+							rub_posMillares = 0;
+					}
 				}
 		}
 }
@@ -457,7 +463,12 @@ static void MAIN_P02_decrementHandler(void){
 				{
 					rub_posDecenas = 9;
 					if(rub_posCentenas == 0)
+					{
 						rub_posCentenas = 9;
+						if(rub_posMillares == 0)
+							rub_posMillares = 9;
+						else rub_posMillares--;
+					}
 					else rub_posCentenas--;
 				}
 		else rub_posDecenas--;
