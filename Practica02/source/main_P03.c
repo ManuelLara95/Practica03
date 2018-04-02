@@ -21,7 +21,7 @@
 /* TODO: MACROS & VARIABLES DEFINITION SECTION */
 /* This is where general variables & macros section starts */
 	//	MACROS:
-	#define GPIOC_OUTPUTBITS	0xFF
+	#define GPIOC_OUTPUTBITS	0xFF // This is a branch change :)
 	#define GPIOE_OUTPUTBITS	0x0F
 	#define	GPIOB_INPUTBITS		0x07
 	#define THREE_BUTTON_BITS	0x07
